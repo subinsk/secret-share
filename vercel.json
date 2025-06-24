@@ -7,14 +7,9 @@
     }
   ],
   "installCommand": "yarn install",
-  "buildCommand": "yarn build",
+  "buildCommand": "prisma generate && yarn build",
   "outputDirectory": "apps/web/.next",
   "framework": "nextjs",
-  "functions": {
-    "apps/web/src/app/api/**/*.ts": {
-      "maxDuration": 30
-    }
-  },
   "env": {
     "NODE_VERSION": "18.x"
   }

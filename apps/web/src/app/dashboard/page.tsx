@@ -84,7 +84,7 @@ export default function DashboardPage() {
       setSearchActive(false);
       return;
     }
-    const filtered = secrets
+    const filtered = (secrets as Secret[])
       .filter(secret =>
         secret.secretText.toLowerCase().includes(searchQuery.toLowerCase()) ||
         secret.id.toLowerCase().includes(searchQuery.toLowerCase())
