@@ -36,7 +36,9 @@ export async function GET() {
     // Filter out expired secrets and mark them as such
     const now = new Date();
 
-    const secretsWithStatus: SecretWithStatus[] = secrets.map((secret) => ({
+    const secretsWithStatus: SecretWithStatus[] = secrets.map((secret:
+      typeof secrets[number]
+    ) => ({
       ...secret,
       hasPassword: !!secret.password,
       password: undefined, // Don't send password hash to client
