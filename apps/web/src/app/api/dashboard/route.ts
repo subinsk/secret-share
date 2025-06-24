@@ -8,7 +8,7 @@ const prisma = new PrismaClient();
 export async function GET() {
   try {
     const session = await getServerSession(authOptions);
-    
+
     if (!session?.user?.id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
@@ -26,17 +26,25 @@ export async function GET() {
       },
     });
 
+    type SecretWithStatus = Omit<typeof secrets[number], 'password'> & {
+      hasPassword: boolean;
+      password?: undefined;
+      status: 'viewed' | 'expired' | 'active';
+    };
+
+
     // Filter out expired secrets and mark them as such
     const now = new Date();
-    const secretsWithStatus = secrets.map(secret => ({
+
+    const secretsWithStatus: SecretWithStatus[] = secrets.map((secret) => ({
       ...secret,
       hasPassword: !!secret.password,
       password: undefined, // Don't send password hash to client
-      status: secret.isViewed 
-        ? 'viewed' 
-        : secret.expiresAt && secret.expiresAt < now 
-        ? 'expired' 
-        : 'active',
+      status: secret.isViewed
+        ? 'viewed'
+        : secret.expiresAt && secret.expiresAt < now
+          ? 'expired'
+          : 'active',
     }));
 
     return NextResponse.json({ secrets: secretsWithStatus });
