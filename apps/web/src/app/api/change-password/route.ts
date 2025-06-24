@@ -6,14 +6,19 @@ import { authOptions } from '@/lib/auth/auth-options';
 
 const prisma = new PrismaClient();
 
-export async function POST(req: Request) {
+interface ChangePasswordRequestBody {
+  currentPassword: string;
+  newPassword: string;
+}
+
+export async function POST(req: Request): Promise<Response> {
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user?.id) {
       return NextResponse.json({ error: 'Not authenticated' }, { status: 401 });
     }
 
-    const { currentPassword, newPassword } = await req.json();
+    const { currentPassword, newPassword }: ChangePasswordRequestBody = await req.json();
 
     if (!currentPassword || !newPassword) {
       return NextResponse.json({ error: 'Current password and new password are required' }, { status: 400 });
@@ -34,13 +39,13 @@ export async function POST(req: Request) {
     }
 
     // Verify current password
-    const isCurrentPasswordValid = await bcrypt.compare(currentPassword, user.hashedPassword);
+    const isCurrentPasswordValid: boolean = await bcrypt.compare(currentPassword, user.hashedPassword);
     if (!isCurrentPasswordValid) {
       return NextResponse.json({ error: 'Current password is incorrect' }, { status: 400 });
     }
 
     // Hash and update new password
-    const hashedNewPassword = await bcrypt.hash(newPassword, 12);
+    const hashedNewPassword: string = await bcrypt.hash(newPassword, 12);
     await prisma.user.update({
       where: { id: session.user.id },
       data: { hashedPassword: hashedNewPassword },
