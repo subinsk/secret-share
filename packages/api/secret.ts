@@ -76,11 +76,9 @@ export const secretRouter = router({  // Create a new secret
           id: true,
           createdAt: true,
         },
-      });
-
-      return {
+      });      return {
         id: secret.id,
-        url: `${process.env.NEXTAUTH_URL}/secret/${secret.id}`,
+        url: `/secret/${secret.id}`,
         createdAt: secret.createdAt,
       };
     }),

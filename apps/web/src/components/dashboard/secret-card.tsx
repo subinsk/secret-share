@@ -164,9 +164,8 @@ export const SecretCard: FC<{
                         <Button
                             size="small"
                             variant='outlined'
-                            startIcon={<CopyIcon />}
-                            onClick={() =>
-                                copyToClipboard(`${window.location.origin}/secret/${secret.id}`)
+                            startIcon={<CopyIcon />}                            onClick={() =>
+                                copyToClipboard(`${process.env.NEXT_PUBLIC_BASE_URL}/secret/${secret.id}`)
                             }
                         >
                             Copy Link

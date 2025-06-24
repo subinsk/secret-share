@@ -36,10 +36,10 @@ export default function CreateSecretPage() {
   const [expiration, setExpiration] = useState('24h');
   const [oneTimeAccess, setOneTimeAccess] = useState(true);
   const [secretUrl, setSecretUrl] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
-  const createSecretMutation = trpc.secret.create.useMutation({
+  const [showPassword, setShowPassword] = useState(false);  const createSecretMutation = trpc.secret.create.useMutation({
     onSuccess: (data: { url: string }) => {
-      setSecretUrl(data.url);
+      const fullUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${data.url}`;
+      setSecretUrl(fullUrl);
       showSnackbar('Secret created successfully!', 'success');
     },
     onError: (error: unknown) => {

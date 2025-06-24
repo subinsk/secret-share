@@ -291,9 +291,8 @@ export default function SearchPage() {
                         <CardActions sx={{ px: 2, pb: 2 }}>
                           <Button
                             size="small"
-                            startIcon={<CopyIcon />}
-                            onClick={() => 
-                              copyToClipboard(`${window.location.origin}/secret/${secret.id}`)
+                            startIcon={<CopyIcon />}                            onClick={() => 
+                              copyToClipboard(`${process.env.NEXT_PUBLIC_BASE_URL}/secret/${secret.id}`)
                             }
                           >
                             Copy Link
